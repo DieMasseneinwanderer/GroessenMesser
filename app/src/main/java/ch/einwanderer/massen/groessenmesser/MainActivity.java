@@ -8,6 +8,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.app.Activity;
+import android.graphics.Color;
+import android.os.Bundle;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         mPreview = new CameraPreview(this, mCamera);
         FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
         preview.addView(mPreview);
+        getSupportActionBar().hide();
     }
 
     @Override
@@ -64,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-
         super.onPause();
         mCamera.release();
     }
