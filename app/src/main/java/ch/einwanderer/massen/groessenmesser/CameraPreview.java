@@ -8,15 +8,12 @@ import android.view.SurfaceView;
 
 import java.io.IOException;
 
-/**
- * TODO: document your custom view class.
- */
-public class CameraView extends SurfaceView implements SurfaceHolder.Callback{
+public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     private SurfaceHolder mHolder;
     private Camera mCamera;
     private final String TAG = "Grössen Messer";
 
-    public CameraView(Context context, Camera camera) {
+    public CameraPreview(Context context, Camera camera) {
         super(context);
         mCamera = camera;
 
@@ -31,7 +28,6 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback{
     public void surfaceCreated(SurfaceHolder holder) {
         // The Surface has been created, now tell the camera where to draw the preview.
         try {
-
             mCamera.setPreviewDisplay(holder);
             mCamera.startPreview();
         } catch (IOException e) {

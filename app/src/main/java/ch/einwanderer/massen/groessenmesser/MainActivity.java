@@ -1,5 +1,7 @@
 package ch.einwanderer.massen.groessenmesser;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,7 +12,7 @@ import android.widget.FrameLayout;
 public class MainActivity extends AppCompatActivity {
 
     private Camera mCamera;
-    private CameraView mPreview;
+    private CameraPreview mPreview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         mCamera = getCameraInstance();
 
         // Create our Preview view and set it as the content of our activity.
-        mPreview = new CameraView(this, mCamera);
+        mPreview = new CameraPreview(this, mCamera);
         FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
         preview.addView(mPreview);
     }
@@ -66,4 +68,18 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         mCamera.release();
     }
+
+    /** Check if this device has a camera */
+    private boolean checkCameraHardware(Context context) {
+        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+            // this device has a camera
+            return true;
+        } else {
+            // no camera on this device
+            return false;
+        }
+    }
+
+
+
 }
