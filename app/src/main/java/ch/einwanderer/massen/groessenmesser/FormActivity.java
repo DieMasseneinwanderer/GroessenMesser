@@ -71,12 +71,8 @@ public class FormActivity extends AppCompatActivity {
 
                 i.putExtra("SCAN_MODE", "QR_CODE_MODE");
                 startActivityForResult(i, SCAN_QR_CODE);
-
-
-
             }
         });
-
     }
 
     private void calculateSize() {
@@ -96,7 +92,6 @@ public class FormActivity extends AppCompatActivity {
                 return;
             }
 
-            // Achtung, je nach App wird etwas anderes eingetragen
             String logmessage = Double.toString(size);
             JSONObject jsonLog = new JSONObject();
             try {

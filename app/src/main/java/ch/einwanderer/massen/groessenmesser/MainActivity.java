@@ -1,8 +1,6 @@
 package ch.einwanderer.massen.groessenmesser;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -14,14 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.app.Activity;
-import android.graphics.Color;
-import android.os.Bundle;
 import android.widget.TextView;
-
-import java.text.DecimalFormat;
-
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -59,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
-
         findViewById(R.id.layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,12 +64,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if(!hasClicked) {
             hasClicked = true;
             lowerAngel = currentRotation;
-
+            Toast.makeText(this, "Messen Sie jetzt den anderen Winkel.", Toast.LENGTH_SHORT).show();
         } else {
-
             Intent intent = new Intent(this, FormActivity.class);
-            intent.putExtra("lower", lowerAngel);
-            intent.putExtra("upper", currentRotation);
+            boolean reversed = lowerAngel > currentRotation;
+            intent.putExtra("lower", reversed?currentRotation:lowerAngel);
+            intent.putExtra("upper", reversed?lowerAngel:currentRotation);
             startActivity(intent);
         }
     }
@@ -97,11 +88,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -113,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
         catch (Exception e){
             // Camera is not available (in use or does not exist)
+            e.printStackTrace();
         }
         return c; // returns null if camera is unavailable
     }
@@ -122,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onPause();
         mCamera.release();
     }
-
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -136,9 +125,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
 
         currentRotation = getCurrentRotationValue();
-
-
-
         mWinkel.setText("Winkel: " + String.format("%.1f", currentRotation));
 
     }
@@ -163,6 +149,4 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         return 0;
     }
-
-
 }
